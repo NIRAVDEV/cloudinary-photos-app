@@ -1,6 +1,6 @@
 import { SearchResult } from "@/app/gallery/page";
 import { Button } from "@/components/ui/button";
-import { addImageToAlbum } from "../action";
+import { addImageToAlbum } from "../actions"; // ✅ CORRECT
 import {
   Dialog,
   DialogTrigger,
