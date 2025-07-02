@@ -1,15 +1,7 @@
 import { SearchResult } from "@/app/gallery/page";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog"; // ✅ adjust path if needed
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FolderPlus } from "lucide-react";
