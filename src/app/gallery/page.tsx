@@ -15,7 +15,7 @@ export default async function GalleryPage({
     search: string;
   };
 }) {
-  const results = (await cloudinary.v2.search
+  const results = (await cloudinary.search
     .expression(`resource_type:image${search ? ` AND tags=${search}` : ""}`)
     .sort_by("created_at", "desc")
     .with_field("tags")
