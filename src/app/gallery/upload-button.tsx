@@ -1,8 +1,7 @@
 "use client";
 
 import { CldUploadButton } from "next-cloudinary";
-import { CldUploadWidgetResults } from "next-cloudinary";
-import { UploadResult } from "../page";
+import type { CldUploadWidgetResults } from "next-cloudinary";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
