@@ -1,5 +1,5 @@
 import UploadButton from "./upload-button";
-import { v2 as cloudinary } from 'cloudinary';
+import cloudinary from '@/lib/cloudinary';
 import GalleryGrid from "./gallery-grid";
 import { SearchForm } from "./search-form";
 
