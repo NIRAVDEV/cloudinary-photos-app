@@ -1,4 +1,4 @@
-import cloudinary from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary';
 import { SearchResult } from "../gallery/page";
 import { ForceRefresh } from "@/components/force-refresh";
 import FavoritesList from "./favorites-list";
