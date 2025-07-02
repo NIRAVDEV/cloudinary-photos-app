@@ -2,10 +2,19 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const isAuthed = request.cookies.get('auth')?.value === 'true'
-  const isLoginPage = request.nextUrl.pathname === '/login'
+  const auth = request.cookies.get('auth')?.value
 
-  if (!isAuthed && !isLoginPage) {
+  // Skip middleware for login and public assets
+  if (
+    request.nextUrl.pathname.startsWith('/login') ||
+    request.nextUrl.pathname.startsWith('/api') ||
+    request.nextUrl.pathname.startsWith('/_next') ||
+    request.nextUrl.pathname.startsWith('/favicon.ico')
+  ) {
+    return NextResponse.next()
+  }
+
+  if (auth !== 'valid') {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
@@ -13,5 +22,13 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|static|favicon.ico|login).*)'],
+  matcher: [
+    /*
+     * Match all paths except:
+     * - static files (_next)
+     * - login page
+     * - api routes
+    */
+    '/((?!_next|login|api|favicon.ico).*)',
+  ]
 }
