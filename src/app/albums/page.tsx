@@ -1,4 +1,4 @@
-import cloudinary from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary';
 import { AlbumCard } from "./album-card";
 
 export type Folder = { name: string; path: string };
