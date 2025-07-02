@@ -1,43 +1,34 @@
 "use client";
 
-import { CldImage } from "next-cloudinary";
-import { CldUploadButton } from "next-cloudinary";
 import { useState } from "react";
-
-export type UploadResult = {
-  info: {
-    public_id: string;
-  };
-  event: "success";
-};
+import { CldUploadButton } from "next-cloudinary";
 
 export default function Home() {
   const [imageId, setImageId] = useState("");
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <CldUploadButton
+        uploadPreset="giomsr4s"
         onUpload={(results) => {
-  const publicId =
-    results?.info && typeof results.info !== "string"
-      ? results.info.public_id
-      : null;
+          const publicId =
+            results?.info && typeof results.info !== "string"
+              ? results.info.public_id
+              : null;
 
-  if (publicId) {
-    setImageId(publicId);
-  } else {
-    console.error("Upload failed or public_id not found");
-  }
-}}
+          if (publicId) {
+            setImageId(publicId);
+          } else {
+            console.error("Upload failed or public_id not found");
+          }
+        }}
+      />
 
       {imageId && (
-        <CldImage
-          width="500"
-          height="300"
-          src={imageId}
-          sizes="100vw"
-          alt="Description of my image"
-        />
+        <div className="mt-6">
+          <p>Uploaded Image ID:</p>
+          <code>{imageId}</code>
+        </div>
       )}
     </main>
   );
