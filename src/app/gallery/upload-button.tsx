@@ -11,11 +11,17 @@ export default function UploadButton() {
   return (
     <Button asChild>
       <CldUploadButton
-        onUpload={(result: UploadResult) => {
-          setTimeout(() => {
-            router.refresh();
-          }, 2000);
-        }}
+        onUpload={(results) => {
+  const publicId = results?.info && typeof results.info !== 'string'
+    ? results.info.public_id
+    : null;
+
+  if (publicId) {
+    setTimeout(() => {
+      router.refresh();
+    }, 2000);
+  }
+}}
         uploadPreset="giomsr4s"
       >
         <div className="flex gap-2">
