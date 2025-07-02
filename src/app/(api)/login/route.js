@@ -1,14 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server'
+// src/app/api/login/route.ts
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+const SECRET_CODE = process.env.SECRET_CODE || "1234";
 
 export async function POST(req: NextRequest) {
-  const body = await req.json()
-  const secret = process.env.SECRET_CODE
+  const { secret } = await req.json();
 
-  if (body.code === secret) {
-    const res = NextResponse.json({ success: true })
-    res.cookies.set('auth', 'true', { httpOnly: true, path: '/' })
-    return res
+  if (secret === SECRET_CODE) {
+    const res = NextResponse.json({ success: true });
+    res.cookies.set("auth", "valid", {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+      httpOnly: true,
+      sameSite: "lax",
+    });
+    return res;
   }
 
-  return NextResponse.json({ success: false }, { status: 401 })
+  return NextResponse.json({ message: "Invalid secret code" }, { status: 401 });
 }
