@@ -1,22 +1,16 @@
 "use client"
 
 import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
+import * as React from "react";
+import { Dialog as DialogPrimitive } from "@radix-ui/react-dialog";
 
-import { cn } from "@/lib/utils"
+interface CustomDialogPortalProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Portal> {
+  className?: string;
+}
 
-const Dialog = DialogPrimitive.Root
-
-const DialogTrigger = DialogPrimitive.Trigger
-
-const DialogPortal = ({
-  className,
-  ...props
-}: DialogPrimitive.DialogPortalProps) => (
-  <DialogPrimitive.Portal className={cn(className)} {...props} />
-)
-DialogPortal.displayName = DialogPrimitive.Portal.displayName
+const DialogPortal = ({ className, ...props }: CustomDialogPortalProps) => (
+  <DialogPrimitive.Portal {...props} className={className} />
+);
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
