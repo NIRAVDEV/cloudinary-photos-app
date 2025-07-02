@@ -1,5 +1,6 @@
 import { SearchResult } from "@/app/gallery/page";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog"; // ✅ adjust path if needed
 import {
   Dialog,
   DialogContent,
