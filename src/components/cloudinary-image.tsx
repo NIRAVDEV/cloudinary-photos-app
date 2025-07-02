@@ -1,53 +1,37 @@
-"use client";
+"use client"
 
-import { Heart } from "@/components/icons/heart";
-import { CldImage, CldImageProps } from "next-cloudinary";
-import { useState, useTransition } from "react";
-import { FullHeart } from "@/components/icons/full-heart";
-import { SearchResult } from "@/app/gallery/page";
-import { setAsFavoriteAction } from "@/app/gallery/actions";
-import { ImageMenu } from "./image-menu";
+import type React from "react"
 
-export function CloudinaryImage(
-  props: {
-    imageData: SearchResult;
-    onUnheart?: (unheartedResource: SearchResult) => void;
-  } & Omit<CldImageProps, "src">
-) {
-  const [transition, startTransition] = useTransition();
+import { useEffect, useState } from "react"
 
-  const { imageData, onUnheart } = props;
+interface CloudinaryWrapperProps {
+  children: React.ReactNode
+  fallback?: React.ReactNode
+}
 
-  const [isFavorited, setIsFavorited] = useState(
-    imageData.tags.includes("favorite")
-  );
+export function CloudinaryWrapper({ children, fallback }: CloudinaryWrapperProps) {
+  const [isConfigured, setIsConfigured] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  return (
-    <div className="relative">
-      <CldImage {...props} src={imageData.public_id} />
-      {isFavorited ? (
-        <FullHeart
-          onClick={() => {
-            onUnheart?.(imageData);
-            setIsFavorited(false);
-            startTransition(() => {
-              setAsFavoriteAction(imageData.public_id, false);
-            });
-          }}
-          className="absolute top-2 left-2 hover:text-white text-red-500 cursor-pointer"
-        />
-      ) : (
-        <Heart
-          onClick={() => {
-            setIsFavorited(true);
-            startTransition(() => {
-              setAsFavoriteAction(imageData.public_id, true);
-            });
-          }}
-          className="absolute top-2 left-2 hover:text-red-500 cursor-pointer"
-        />
-      )}
-      <ImageMenu image={imageData} />
-    </div>
-  );
+  useEffect(() => {
+    try {
+      if (process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME) {
+        setIsConfigured(true)
+      } else {
+        setError("Cloudinary not configured")
+      }
+    } catch (err) {
+      setError("Cloudinary configuration error")
+    }
+  }, [])
+
+  if (error && fallback) {
+    return <>{fallback}</>
+  }
+
+  if (!isConfigured) {
+    return <div>Loading...</div>
+  }
+
+  return <>{children}</>
 }
