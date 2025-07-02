@@ -17,11 +17,18 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <CldUploadButton
-        onUpload={(result: UploadResult) => {
-          setImageId(result.info.public_id);
-        }}
-        uploadPreset="giomsr4s"
-      />
+        onUpload={(results) => {
+  const publicId =
+    results?.info && typeof results.info !== "string"
+      ? results.info.public_id
+      : null;
+
+  if (publicId) {
+    setImageId(publicId);
+  } else {
+    console.error("Upload failed or public_id not found");
+  }
+}}
 
       {imageId && (
         <CldImage
