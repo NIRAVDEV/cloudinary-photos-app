@@ -9,8 +9,10 @@ import React from "react";
 const Dialog = DialogPrimitive.Root;
 const DialogTrigger = DialogPrimitive.Trigger;
 
-const DialogPortal = ({ className, ...props }: DialogPrimitive.DialogPortalProps) => (
-  <DialogPrimitive.Portal className={cn(className)} {...props} />
+const DialogPortal = ({ children }: { children: React.ReactNode }) => (
+  <DialogPrimitive.Portal>
+    <div className="fixed inset-0 z-50">{children}</div>
+  </DialogPrimitive.Portal>
 );
 DialogPortal.displayName = DialogPrimitive.Portal.displayName;
 
