@@ -1,39 +1,62 @@
 'use client'
+
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const res = await fetch('/api/login', {
+    setError('')
+
+    const res = await fetch('/api/auth', {
       method: 'POST',
-      body: JSON.stringify({ code }),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ code })
     })
 
-    if (res.ok) {
+    const data = await res.json()
+
+    if (data.success) {
       router.push('/')
     } else {
-      setError('Invalid secret code')
+      setError('Incorrect secret code. Please try again.')
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow space-y-4">
-        <h1 className="text-xl font-semibold">Enter Secret Code</h1>
+    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded shadow-md w-full max-w-sm space-y-6"
+      >
+        <h1 className="text-xl font-semibold text-center text-gray-800">🔐 Enter Secret Code</h1>
+
         <input
           type="password"
           value={code}
           onChange={(e) => setCode(e.target.value)}
-          className="w-full p-2 border rounded"
+          placeholder="Enter secret code"
+          className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
         />
-        <button className="bg-black text-white px-4 py-2 rounded" type="submit">Login</button>
-        {error && <p className="text-red-500">{error}</p>}
+
+        {error && (
+          <p className="text-red-600 text-sm text-center">{error}</p>
+        )}
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+        >
+          Login
+        </button>
       </form>
-    </div>
+    </main>
   )
-            }
+}
